@@ -2,6 +2,12 @@
 #
 # AppVeyor configuration to test Net::SSLeay on Windows
 #
+# If old Perls start to fail, consider skipping the build tests
+# completely or see how to test just the distribution package. What we
+# do now is to test build environment. What's actually needed,
+# especially with older Perls, is just to see if the distribution
+# Net::SSLeay package compiles and passes 'make test' successfully.
+#
 # Various parts collected from:
 # cache, install and build_script sections thanks to blogs.perl.org
 # entries by eserte and mauke.
@@ -33,6 +39,13 @@ platform:
 # - old Strawberry Perls don't have cpanm
 # - on server 2012R2 image's MinGW was causing linking problems with
 #   Strawberry Perl's MinGW.
+# - ExtUtils::MakeMaker is updated before Module::Install on older
+#   Perls to a version that installs successuflly and is recent enough
+#   for Module::Install
+# - Freeze Module::Install to the currently latest version because it
+#   seems to work. Change it later if needed; avoid moving parts now.
+# - Tests are skipped for some versions because the dependency
+#   failures did not affect Net::SSLeay build
 environment:
   AUTOMATED_TESTING: 1
   PERL_MM_USE_DEFAULT: 1
@@ -45,18 +58,18 @@ environment:
 #    - perl: 5.20.3.3
 #    - perl: 5.18.4.1
 #    - perl: 5.16.3.20170202
-#    - perl: 5.14.4.1
-#    - perl: 5.12.3.20180703
-#      ssleay_need_cpanm: 1
-#      PERL_CPANM_OPT: --notest
+    - perl: 5.14.4.1
+    - perl: 5.12.3.20180703
+      ssleay_need_cpanm: 1
+      PERL_CPANM_OPT: --notest
     - perl: 5.10.1.5
       ssleay_need_cpanm: 1
       ssleay_module_install: 1.19
       ssleay_make_maker: 6.98
       ssleay_rename_mingw: 1
     - perl: 5.8.9.5
-      PERL_CPANM_OPT: --notest
       ssleay_need_cpanm: 1
+      PERL_CPANM_OPT: --notest
       ssleay_module_install: 1.19
       ssleay_make_maker: 6.98
       ssleay_rename_mingw: 1
@@ -115,7 +128,7 @@ build_script:
 test_script:
   - perl -MConfig -e "system $Config{make}, 'test'"
 
-# Run make dist
+# Build some artifacts
 after_test:
   - tar zcvf Net-SSLeay.tar.gz blib
   - perl -MConfig -e "system $Config{make}, 'ppd'"
