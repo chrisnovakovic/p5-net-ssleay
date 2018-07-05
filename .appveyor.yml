@@ -21,14 +21,14 @@
 # 2017 is Windows Server 2016, earlier are 2012R2
 image:
   - Visual Studio 2017
-#  - Visual Studio 2015
+  - Visual Studio 2015
 
 # There's also Any CPU. Note: this does not select 32bit or 64bit
 # OS. Both server versions are 64bit and this seems to be related to
 # Visual Studio configuration. We use this to choose either 64bit or
 # 32bit Strawberry Perl.
 platform:
-#  - x64
+  - x64
   - x86
 
 # Environment variables need to:
@@ -53,13 +53,13 @@ environment:
   OPENSSL_PREFIX: C:\strawberry\c
   ssleay_module_install: 1.19
   matrix:
-#    - perl: 5.26.2.1
-#    - perl: 5.24.4.1
-#    - perl: 5.22.3.1
-#    - perl: 5.20.3.3
-#    - perl: 5.18.4.1
-#    - perl: 5.16.3.20170202
-#    - perl: 5.14.4.1
+    - perl: 5.26.2.1
+    - perl: 5.24.4.1
+    - perl: 5.22.3.1
+    - perl: 5.20.3.3
+    - perl: 5.18.4.1
+    - perl: 5.16.3.20170202
+    - perl: 5.14.4.1
     - perl: 5.12.3.20180703
       ssleay_need_cpanm: 1
       PERL_CPANM_OPT: --notest
