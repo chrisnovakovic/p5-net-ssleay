@@ -114,8 +114,8 @@ install:
   - if /I "%ssleay_need_cpanm%" == "1" cpan App::cpanminus
   - if /I "%ssleay_rename_mingw%" == "1" if exist C:\MinGW move C:\MinGW C:\MinGW-image
   - if /I "%ssleay_rename_mingw%" == "1" if exist C:\MinGW-W64 move C:\MinGW-W64 C:\MinGW-W64-image
-  - if not "%ssleay_make_maker%" == "" cpanm --notest ExtUtils::MakeMaker@%ssleay_make_maker%
-  - cpanm --notest --no-man-pages Module::Install@%ssleay_module_install%
+  - if not "%ssleay_make_maker%" == "" cpanm --notest --no-man-pages ExtUtils::MakeMaker@%ssleay_make_maker%
+  - if not "%ssleay_module_install%" == "" cpanm --notest --no-man-pages Module::Install@%ssleay_module_install%
   - cpanm --quiet --no-man-pages --installdeps --with-develop --notest .
   - perl -V
 
