@@ -29,7 +29,7 @@ image:
 # 32bit Strawberry Perl.
 platform:
   - x64
-  - x86
+#  - x86
 
 # Environment variables need to:
 # - use defaults for external tests and other Makefile.PL prompts
@@ -40,7 +40,7 @@ platform:
 # - on server 2012R2 image's MinGW was causing linking problems with
 #   Strawberry Perl's MinGW.
 # - ExtUtils::MakeMaker is updated before Module::Install on older
-#   Perls to a version that installs successuflly and is recent enough
+#   Perls to a version that installs successfully and is recent enough
 #   for Module::Install
 # - Freeze Module::Install to the currently latest version because it
 #   seems to work. Change it later if needed; avoid moving parts now.
