@@ -64,9 +64,10 @@ environment:
 # 64 bit Strawberry Perl is not built for all versions
 matrix:
   exclude:
-    - platform: x64
-      perl: 5.10.1.5
-      perl: 5.8.9.5
+    - perl: 5.10.1.5
+      platform x64
+    - perl: 5.8.9.5
+      platform x64
 
 # Skip build for every push on most branches
 branches:
