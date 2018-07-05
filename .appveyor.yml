@@ -51,6 +51,7 @@ environment:
   PERL_MM_USE_DEFAULT: 1
   RELEASE_TESTING: 0
   OPENSSL_PREFIX: C:\strawberry\c
+  ssleay_module_install: 1.19
   matrix:
     - perl: 5.26.2.1
 #    - perl: 5.24.4.1
@@ -64,13 +65,11 @@ environment:
       PERL_CPANM_OPT: --notest
     - perl: 5.10.1.5
       ssleay_need_cpanm: 1
-      ssleay_module_install: 1.19
       ssleay_make_maker: 6.98
       ssleay_rename_mingw: 1
     - perl: 5.8.9.5
       ssleay_need_cpanm: 1
       PERL_CPANM_OPT: --notest
-      ssleay_module_install: 1.19
       ssleay_make_maker: 6.98
       ssleay_rename_mingw: 1
 
