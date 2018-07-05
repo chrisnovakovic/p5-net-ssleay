@@ -46,14 +46,15 @@ environment:
 #    - perl: 5.18.4.1
 #    - perl: 5.16.3.20170202
 #    - perl: 5.14.4.1
-    - perl: 5.12.3.20180703
-      ssleay_need_cpanm: 1
-      PERL_CPANM_OPT: --notest
-    - perl: 5.10.1.5
-      ssleay_need_cpanm: 1
-      ssleay_make_maker: 6.98
-      ssleay_rename_mingw: 1
+#    - perl: 5.12.3.20180703
+#      ssleay_need_cpanm: 1
+#      PERL_CPANM_OPT: --notest
+#    - perl: 5.10.1.5
+#      ssleay_need_cpanm: 1
+#      ssleay_make_maker: 6.98
+#      ssleay_rename_mingw: 1
     - perl: 5.8.9.5
+      PERL_CPANM_OPT: --notest
       ssleay_need_cpanm: 1
       ssleay_make_maker: 6.98
       ssleay_rename_mingw: 1
