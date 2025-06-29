@@ -7976,11 +7976,23 @@ ASN1_OBJECT *
 P_X509_get_signature_alg(x)
         X509 * x
     CODE:
-#if (OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)) || (LIBRESSL_VERSION_NUMBER >= 0x3050000fL)
-        RETVAL = (X509_get0_tbs_sigalg(x)->algorithm);
+    {
+        X509_ALGOR *algor;
+        ASN1_OBJECT *obj;
+#if (OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)) || (LIBRESSL_VERSION_NUMBER >= 0x3050000fL) /* OpenSSL 1.1.0, LibreSSL 3.5.0 */
+        algor = (X509_ALGOR*)X509_get0_tbs_sigalg(x);
 #else
-        RETVAL = (x->cert_info->signature->algorithm);
+        algor = x->cert_info->signature;
 #endif
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L /* OpenSSL 1.1.0, LibreSSL < 3.5.0 */
+        X509_ALGOR_get0((const ASN1_OBJECT**)&obj, NULL, NULL, algor);
+#elif OPENSSL_VERSION_NUMBER >= 0x0090808fL /* OpenSSL 0.9.8h */
+        X509_ALGOR_get0(&obj, NULL, NULL, algor);
+#else
+        obj = algor->algorithm;
+#endif
+        RETVAL = obj;
+    }
     OUTPUT:
         RETVAL
 
