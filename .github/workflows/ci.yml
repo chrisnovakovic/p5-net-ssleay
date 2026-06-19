@@ -460,6 +460,71 @@ jobs:
             echo n | perl Makefile.PL;
             make test;
 
+  # This matrix tests Net-SSLeay against Strawberry Perl, linking to the copy of
+  # OpenSSL bundled with Strawberry Perl.
+  strawberry:
+    name: Strawberry Perl ${{ matrix.strawberry_version }} ${{ matrix.arch }} (Visual Studio ${{ matrix.vs_version }})
+    runs-on: ${{ case(matrix.vs_version == '2026', 'windows-2025', matrix.vs_version == '2022', 'windows-2022', null) }}
+    strategy:
+      fail-fast: false
+      matrix:
+        strawberry_version:
+          - '5.42.2.1'
+          - '5.40.4.1'
+          - '5.38.4.1'
+          - '5.36.3.1'
+          - '5.34.3.1'
+          - '5.32.1.1'
+          - '5.30.3.1'
+          - '5.28.2.1'
+          - '5.26.3.1'
+          - '5.24.4.1'
+          - '5.22.3.1'
+          - '5.20.3.3'
+          - '5.18.4.1'
+          - '5.16.3.20170202'
+          - '5.14.4.1'
+          - '5.12.3.20180709'
+          - '5.10.1.5'
+          - '5.8.9.5'
+        arch:
+          - x86
+          - x64
+        vs_version:
+          - '2022'
+          - '2026'
+        exclude:
+          # OpenSSL 1.0.0-beta4, bundled with the x64 version of Strawberry Perl
+          # 5.12.3.20180709, malfunctions on Windows x64 - see GH-189
+          - strawberry_version: '5.12.3.20180709'
+            arch: x64
+          # There is no x64 version of Strawberry Perl for Perl 5.10 and below
+          - strawberry_version: '5.10.1.5'
+            arch: x64
+          - strawberry_version: '5.8.9.5'
+            arch: x64
+    env:
+      OPENSSL_PREFIX: C:\sp\c
+      PERL_MM_USE_DEFAULT: 1
+    steps:
+      # Strawberry Perl is already installed at C:\strawberry on GitHub's hosted Windows runners,
+      # and installing a new version over an existing version is known to cause problems - see the
+      # Discussion section on https://community.chocolatey.org/packages/StrawberryPerl/. Install it
+      # to C:\sp and add that directory to our PATH to avoid any conflicts.
+      - name: Install Strawberry Perl
+        run: |
+          choco uninstall strawberryperl -y
+          choco install strawberryperl -y --version=${{ matrix.strawberry_version }} ${{ case(matrix.arch == 'x86', '--forcex86', '') }} --install-arguments=INSTALLDIR=C:\sp
+          echo C:\sp\c\bin >> $Env:GITHUB_PATH
+          echo C:\sp\perl\site\bin >> $Env:GITHUB_PATH
+          echo C:\sp\perl\bin >> $Env:GITHUB_PATH
+      - name: Show Perl details
+        run: |
+          (Get-Command perl).Path
+          perl -V
+      - name: Check out p5-net-ssleay
+        uses: actions/checkout@v7
+
   cygwin:
     runs-on: windows-latest
 
